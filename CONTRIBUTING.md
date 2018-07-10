@@ -8,12 +8,14 @@ To report a bug, please [check for existing issues, then create a new issue on t
 
 # Contribution
 
-For Services and Applications contribution, we have an [curated list of Awesome Services and Applications](https://github.com/mesg-foundation/awesome) that you should participate in.
+For service and application contributions, we have an [curated list of Awesome services and applications](https://github.com/mesg-foundation/awesome) that you should participate in.
 
-For contribution to MESG's Core, please contact us on [Discord](https://discordapp.com/invite/5tVTHJC) channel #core. We would love to include you in the development process.
+For contribution to MESG Core, please contact us on [Discord](https://discordapp.com/invite/5tVTHJC) channel #core. We would love to include you in the development process.
 
-If you add a new feature or fix a bug then don't forget to update the CHANGELOG.md following this format https://keepachangelog.com/
+If you add a new feature or fix a bug then don't forget to update the CHANGELOG.md following this format: https://keepachangelog.com/
+
+We follow the Github Flow. For more information on proper forking, commits and pull requests, refer to this guide: https://guides.github.com/introduction/flow/
 
 # Start developing the Core
 
-You can find all resources in our [wiki](https://github.com/mesg-foundation/core/wiki). It will guide you from pulling the project, to building and testing it, and submit your work to the community.
+All resources can be found in our [wiki](https://github.com/mesg-foundation/core/wiki). This will guide you from pulling the project to building and testing it, and submitting your work to the community.
