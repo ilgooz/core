@@ -8,36 +8,38 @@ import (
 	"github.com/stvp/assert"
 )
 
-func removeSharedNetworkIfExist(client *docker.Client) (err error) {
-	_, err = sharedNetwork(client)
+func removeSharedNetworkIfExist(c *Container) error {
+	_, err := c.sharedNetwork()
 	if docker.IsErrNotFound(err) {
-		err = nil
-		return
+		return nil
 	}
 	if err != nil {
-		return
+		return err
 	}
-	err = client.NetworkRemove(context.Background(), Namespace(sharedNetworkNamespace))
-	return
+	return c.client.NetworkRemove(context.Background(), Namespace(sharedNetworkNamespace))
 }
 
 func TestCreateSharedNetworkIfNeeded(t *testing.T) {
-	client, _ := createClient()
-	err := removeSharedNetworkIfExist(client)
+	c, err := New()
 	assert.Nil(t, err)
-	err = createSharedNetworkIfNeeded(client)
+	err = removeSharedNetworkIfExist(c)
+	assert.Nil(t, err)
+	err = c.createSharedNetworkIfNeeded()
 	assert.Nil(t, err)
 }
 
 func TestSharedNetwork(t *testing.T) {
-	client, _ := Client()
-	network, err := sharedNetwork(client)
+	c, err := New()
+	assert.Nil(t, err)
+	network, err := c.sharedNetwork()
 	assert.Nil(t, err)
 	assert.NotEqual(t, "", network.ID)
 }
 
 func TestSharedNetworkID(t *testing.T) {
-	networkID, err := SharedNetworkID()
+	c, err := New()
+	assert.Nil(t, err)
+	networkID, err := c.SharedNetworkID()
 	assert.Nil(t, err)
 	assert.NotEqual(t, "", networkID)
 }

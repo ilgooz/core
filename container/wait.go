@@ -7,11 +7,11 @@ import (
 )
 
 // waitForStatus wait for the container to have the provided status. Returns error as soon as possible
-func waitForStatus(namespace []string, status StatusType) (err error) {
+func (c *Container) waitForStatus(namespace []string, status StatusType) (err error) {
 	var tasksErrors []string
 	var currentStatus StatusType
 	for {
-		tasksErrors, err = TasksError(namespace)
+		tasksErrors, err = c.TasksError(namespace)
 		if err != nil {
 			break
 		}
@@ -19,7 +19,7 @@ func waitForStatus(namespace []string, status StatusType) (err error) {
 			err = errors.New(strings.Join(tasksErrors, ", "))
 			break
 		}
-		currentStatus, err = Status(namespace)
+		currentStatus, err = c.Status(namespace)
 		if err != nil || currentStatus == status {
 			break
 		}

@@ -8,24 +8,20 @@ import (
 )
 
 // CreateNetwork creates a Docker Network with a namespace
-func CreateNetwork(namespace []string) (networkID string, err error) {
-	network, err := FindNetwork(namespace)
+func (c *Container) CreateNetwork(namespace []string) (networkID string, err error) {
+	network, err := c.FindNetwork(namespace)
 	if docker.IsErrNotFound(err) {
-		err = nil
+		return "", nil
 	}
 	if err != nil {
-		return
+		return "", err
 	}
 	if network.ID != "" {
 		networkID = network.ID
 		return
 	}
 	namespaceFlat := Namespace(namespace)
-	client, err := Client()
-	if err != nil {
-		return
-	}
-	response, err := client.NetworkCreate(context.Background(), namespaceFlat, types.NetworkCreate{
+	response, err := c.client.NetworkCreate(context.Background(), namespaceFlat, types.NetworkCreate{
 		CheckDuplicate: true, // Cannot have 2 network with the same name
 		Driver:         "overlay",
 		Labels: map[string]string{
@@ -40,29 +36,19 @@ func CreateNetwork(namespace []string) (networkID string, err error) {
 }
 
 // DeleteNetwork deletes a Docker Network associated with a namespace
-func DeleteNetwork(namespace []string) (err error) {
-	network, err := FindNetwork(namespace)
+func (c *Container) DeleteNetwork(namespace []string) (err error) {
+	network, err := c.FindNetwork(namespace)
 	if docker.IsErrNotFound(err) {
-		err = nil
-		return
+		return nil
 	}
 	if err != nil {
-		return
+		return err
 	}
-	client, err := Client()
-	if err != nil {
-		return
-	}
-	err = client.NetworkRemove(context.Background(), network.ID)
-	return
+	return c.client.NetworkRemove(context.Background(), network.ID)
+
 }
 
 // FindNetwork finds a Docker Network by a namespace. If no network if found, an error is returned.
-func FindNetwork(namespace []string) (network types.NetworkResource, err error) {
-	client, err := Client()
-	if err != nil {
-		return
-	}
-	network, err = client.NetworkInspect(context.Background(), Namespace(namespace), types.NetworkInspectOptions{})
-	return
+func (c *Container) FindNetwork(namespace []string) (network types.NetworkResource, err error) {
+	return c.client.NetworkInspect(context.Background(), Namespace(namespace), types.NetworkInspectOptions{})
 }
