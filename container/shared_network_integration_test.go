@@ -1,3 +1,5 @@
+// +build integration
+
 package container
 
 import (
@@ -19,7 +21,7 @@ func removeSharedNetworkIfExist(c *Container) error {
 	return c.client.NetworkRemove(context.Background(), Namespace(sharedNetworkNamespace))
 }
 
-func TestCreateSharedNetworkIfNeeded(t *testing.T) {
+func TestIntegrationCreateSharedNetworkIfNeeded(t *testing.T) {
 	c, err := New()
 	assert.Nil(t, err)
 	err = removeSharedNetworkIfExist(c)
@@ -28,7 +30,7 @@ func TestCreateSharedNetworkIfNeeded(t *testing.T) {
 	assert.Nil(t, err)
 }
 
-func TestSharedNetwork(t *testing.T) {
+func TestIntegrationSharedNetwork(t *testing.T) {
 	c, err := New()
 	assert.Nil(t, err)
 	network, err := c.sharedNetwork()
@@ -36,7 +38,7 @@ func TestSharedNetwork(t *testing.T) {
 	assert.NotEqual(t, "", network.ID)
 }
 
-func TestSharedNetworkID(t *testing.T) {
+func TestIntegrationSharedNetworkID(t *testing.T) {
 	c, err := New()
 	assert.Nil(t, err)
 	networkID, err := c.SharedNetworkID()

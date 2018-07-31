@@ -32,6 +32,7 @@ func (c *Container) createSharedNetworkIfNeeded() error {
 
 	ctx, cancel := context.WithTimeout(context.Background(), c.callTimeout)
 	defer cancel()
+
 	// Create the new network needed to run containers
 	namespace := Namespace(sharedNetworkNamespace)
 	_, err = c.client.NetworkCreate(ctx, namespace, types.NetworkCreate{
@@ -49,5 +50,4 @@ func (c *Container) sharedNetwork() (network types.NetworkResource, err error) {
 	ctx, cancel := context.WithTimeout(context.Background(), c.callTimeout)
 	defer cancel()
 	return c.client.NetworkInspect(ctx, Namespace(sharedNetworkNamespace), types.NetworkInspectOptions{})
-
 }
